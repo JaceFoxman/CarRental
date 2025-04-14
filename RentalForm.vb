@@ -9,6 +9,43 @@ Option Strict On
 Option Compare Binary
 
 Public Class RentalForm
+    'Calculations and User Input_____________________________________________________________________
+    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+        If UserInput() = True Then
+            RunCalculation()
+            SummaryButton.Enabled = True
+        End If
+    End Sub
+    Function OdometerDifference() As Integer
+        Dim _odometerDifference As Integer
+        Dim milesCharged As Integer
+        Dim errorMessage As String
+        _odometerDifference = (CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text))
+        If _odometerDifference < 0 Then
+            errorMessage = "Miles driven can not be less than 0!"
+            MsgBox(errorMessage, MsgBoxStyle.Critical, "Math Error")
+        ElseIf OdometerDifference > 0 Then
+            If _odometerDifference < 200 Then
+                milesCharged = 0
+            ElseIf _odometerDifference > 200 Then
+                milesCharged = (_odometerDifference - 200)
+            End If
+        End If
+        Return milesCharged
+    End Function
+    Sub RunCalculation()
+        Dim dailyFee As Integer = 15
+        Dim milesCharged As Integer
+        Dim milesFee As Decimal
+
+        milesCharged = OdometerDifference()
+
+        If milesCharged > 500 Then
+            milesFee = (milesCharged * 0.01D)
+        ElseIf milesCharged < 500 Then
+            milesFee = (milesCharged * 0.012D)
+        End If
+    End Sub
     Function UserInput() As Boolean
         Dim valid As Boolean = True
         Dim errorMessage As String
@@ -105,7 +142,15 @@ Public Class RentalForm
         TotalChargeTextBox.Text = ""
     End Sub
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
-        Me.Close()
+        Dim msg = "Are you sure you want to Exit?"
+        Dim style = MsgBoxStyle.OkCancel
+        Dim title = "EXIT"
+        Dim response = MsgBox(msg, style, title)
+
+        If response = MsgBoxResult.Ok Then
+            Me.Close()
+        ElseIf response = MsgBoxResult.Cancel Then
+        End If
     End Sub
 
 End Class
