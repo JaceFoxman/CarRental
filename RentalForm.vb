@@ -8,7 +8,21 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 Public Class RentalForm
-    Private Sub RentalForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+        Me.Close()
+    End Sub
 
+    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
+        Clear()
+    End Sub
+    Sub Clear()
+        NameTextBox.Text = ""
+        AddressTextBox.Text = ""
+        CityTextBox.Text = ""
+        StateTextBox.Text = ""
+        ZipCodeTextBox.Text = ""
+        BeginOdometerTextBox.Text = ""
+        EndOdometerTextBox.Text = ""
+        DaysTextBox.Text = ""
     End Sub
 End Class
