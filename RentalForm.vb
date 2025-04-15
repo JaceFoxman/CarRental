@@ -116,7 +116,18 @@ Public Class RentalForm
         End If
         Return milesCharged
     End Function
-
+    Function KilometerFee() As Decimal
+        Dim _KilometerFee As Decimal
+        Dim kilometersCharged = (OdometerDifference() * 0.62D)
+        If kilometersCharged < 310 Then
+            _KilometerFee = (kilometersCharged * 0.012D)
+        ElseIf kilometersCharged > 310 Then
+            _KilometerFee = (kilometersCharged * 0.01D)
+        ElseIf kilometersCharged = 310 Then
+            _KilometerFee = (kilometersCharged * 0.01D)
+        End If
+        Return _KilometerFee
+    End Function
     Function OdometerFee() As Decimal
         Dim milesFee As Decimal
         Dim milesCharged = OdometerDifference()
@@ -132,7 +143,11 @@ Public Class RentalForm
     End Function
     Function TotalFee() As Decimal
         Dim _TotalFee As Decimal
-        _TotalFee = (OdometerFee() + NumberOfDaysFee())
+        If MilesradioButton.Checked = True Then
+            _TotalFee = (OdometerFee() + NumberOfDaysFee())
+        ElseIf KilometersradioButton.Checked = True Then
+            _TotalFee = (KilometerFee() + NumberOfDaysFee())
+        End If
         Return _TotalFee
     End Function
     Function UserInput() As Boolean
