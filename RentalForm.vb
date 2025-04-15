@@ -46,10 +46,16 @@ Public Class RentalForm
             Dim totalDiscount As Decimal
             Dim precentoff As Decimal
             Dim customerPayment As Decimal
-
             SummaryButton.Enabled = True
-            TotalMilesTextBox.Text = $"{(CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text))}mi."
-            MileageChargeTextBox.Text = $"{OdometerDifference()}mi."
+
+            If MilesradioButton.Checked = True Then
+                TotalMilesTextBox.Text = $"{(CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text))}mi."
+                MileageChargeTextBox.Text = $"{OdometerDifference()}mi."
+            ElseIf KilometersradioButton.Checked = True Then
+                TotalMilesTextBox.Text = $"{(CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)) * 0.62D}mi."
+                MileageChargeTextBox.Text = $"{OdometerDifference() * 0.62D}mi."
+            End If
+
             DayChargeTextBox.Text = $"${NumberOfDaysFee()}"
 
             If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
