@@ -16,6 +16,19 @@ Public Class RentalForm
             SummaryButton.Enabled = True
         End If
     End Sub
+    Function NumberOfDays() As Integer
+        Dim _NumberOfDays As Integer
+        Try
+            _NumberOfDays = CInt(DaysTextBox.Text)
+        Catch ex As Exception
+            If CInt(DaysTextBox.Text) < 0 Then
+                MsgBox("Cannont rent for 0 days", MsgBoxStyle.MsgBoxHelp, "Error!")
+            ElseIf CInt(DaysTextBox.Text) > 45 Then
+                MsgBox("Cannont rent for more than 45 days", MsgBoxStyle.MsgBoxHelp, "Error!")
+            End If
+        End Try
+        Return _NumberOfDays
+    End Function
     Function OdometerDifference() As Integer
         Dim _odometerDifference As Integer
         Dim milesCharged As Integer
