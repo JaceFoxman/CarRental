@@ -18,7 +18,7 @@ Public Class RentalForm
         Dim _Summary As String
         _Summary = $"{CustomerCounter(, True)} Customers" & vbNewLine _
             & $"{TotalMilesDriven(, True)} Miles Driven" & vbNewLine _
-            & $"{NumberOfCharges(, True)} Charges"
+            & $"${NumberOfCharges(, True)} In Charges"
         MsgBox(_Summary, MsgBoxStyle.OkOnly, "Summary")
     End Sub
     Function CustomerCounter(Optional clear As Boolean = False, Optional read As Boolean = False) As Integer
@@ -29,7 +29,6 @@ Public Class RentalForm
         End If
         Return totalCustomers
     End Function
-
     Function TotalMilesDriven(Optional clear As Boolean = False, Optional TotalMiles As Boolean = False) As Decimal
         Static _totalMiles As Decimal
         If TotalMiles = False Then
@@ -38,7 +37,6 @@ Public Class RentalForm
         End If
         Return _totalMiles
     End Function
-
     Function NumberOfCharges(Optional clear As Boolean = False, Optional TotalCharges As Boolean = False) As Decimal
         Static totalPayment As Decimal
         Dim payment As Decimal
@@ -69,16 +67,16 @@ Public Class RentalForm
             DayChargeTextBox.Text = $"${NumberOfDaysFee()}"
 
             precentoff = (TotalFee() * TotalDiscount())
-            TotalDiscountTextBox.Text = precentoff.ToString("C")
+            TotalDiscountTextBox.Text = precentoff.ToString("C") '("C") allows the text box to get ride of traling zeros
             customerPayment = (TotalFee() - precentoff)
-            TotalChargeTextBox.Text = $"{customerPayment.ToString("C")}"
+            TotalChargeTextBox.Text = $"{customerPayment.ToString("C")}" '("C") allows the text box to get ride of traling zeros
+            customerPayment = (TotalFee() - precentoff)
 
             CustomerCounter()
             TotalMilesDriven()
             NumberOfCharges()
         End If
     End Sub
-
     Function TotalDiscount() As Decimal
         Dim _TotalDiscount As Decimal
         If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
@@ -207,7 +205,7 @@ Public Class RentalForm
             errorMessage &= "Please enter the Customer's state." & vbNewLine
         End If
 
-        If ZipCodeTextBox.Text = "" Then
+        If IsNumeric(ZipCodeTextBox.Text) = False Then
             valid = False
             errorMessage &= "Please enter the Customer's ZIP." & vbNewLine
         End If
@@ -218,7 +216,6 @@ Public Class RentalForm
         End If
         Return valid
     End Function
-
     'Defaults and Clear______________________________________________________________________________
     Private Sub RentalForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         SetDefaults()
