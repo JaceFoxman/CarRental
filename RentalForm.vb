@@ -22,30 +22,37 @@ Public Class RentalForm
         MsgBox(_Summary, MsgBoxStyle.OkOnly, "Summary")
     End Sub
     Function CustomerCounter(Optional clear As Boolean = False, Optional read As Boolean = False) As Integer
-        Dim totalCustomers As Integer
-        If clear = False And read = False Then
+        Static totalCustomers As Integer
+        If read = False Then
             totalCustomers += 1
+        ElseIf read = True Then
         End If
         Return totalCustomers
     End Function
 
     Function TotalMilesDriven(Optional clear As Boolean = False, Optional TotalMiles As Boolean = False) As Integer
-        Dim _totalMiles As Integer
-        If clear = False And TotalMiles = False Then
-            _totalMiles = (_totalMiles + (CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)))
+        Static _totalMiles As Integer
+        If TotalMiles = False Then
+            _totalMiles += 1
+        ElseIf TotalMiles = True Then
         End If
         Return _totalMiles
     End Function
 
     Function NumberOfCharges(Optional clear As Boolean = False, Optional TotalCharges As Boolean = False) As Integer
-
+        Static toatalpayments As Integer
+        If TotalCharges = False Then
+            toatalpayments += 1
+        ElseIf TotalCharges = True Then
+        End If
+        Return toatalpayments
     End Function
     'Calculations and User Input_____________________________________________________________________
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click, CalculateToolStripMenuItem.Click
+        Dim totalDiscount As Decimal
+        Dim precentoff As Decimal
+        Dim customerPayment As Decimal
         If UserInput() = True Then
-            Dim totalDiscount As Decimal
-            Dim precentoff As Decimal
-            Dim customerPayment As Decimal
             SummaryButton.Enabled = True
 
             If MilesradioButton.Checked = True Then
@@ -69,12 +76,14 @@ Public Class RentalForm
             End If
 
             precentoff = (TotalFee() * totalDiscount)
-            TotalDiscountTextBox.Text = $"${precentoff}"
+            TotalDiscountTextBox.Text = precentoff.ToString("C")
             customerPayment = (TotalFee() - precentoff)
-                TotalChargeTextBox.Text = $"${customerPayment}"
-                CustomerCounter()
-                TotalMilesDriven()
-            End If
+            TotalChargeTextBox.Text = $"{customerPayment.ToString("C")}"
+
+            CustomerCounter()
+            TotalMilesDriven()
+            NumberOfCharges()
+        End If
     End Sub
     Function NumberOfDaysFee() As Integer
         Dim _NumberOfDaysFee As Integer
