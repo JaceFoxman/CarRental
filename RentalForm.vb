@@ -30,10 +30,10 @@ Public Class RentalForm
         Return totalCustomers
     End Function
 
-    Function TotalMilesDriven(Optional clear As Boolean = False, Optional TotalMiles As Boolean = False) As Integer
-        Static _totalMiles As Integer
+    Function TotalMilesDriven(Optional clear As Boolean = False, Optional TotalMiles As Boolean = False) As Decimal
+        Static _totalMiles As Decimal
         If TotalMiles = False Then
-            _totalMiles += 1
+            _totalMiles += (CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text))
         ElseIf TotalMiles = True Then
         End If
         Return _totalMiles
@@ -42,7 +42,7 @@ Public Class RentalForm
     Function NumberOfCharges(Optional clear As Boolean = False, Optional TotalCharges As Boolean = False) As Integer
         Static toatalpayments As Integer
         If TotalCharges = False Then
-            toatalpayments += 1
+
         ElseIf TotalCharges = True Then
         End If
         Return toatalpayments
