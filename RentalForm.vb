@@ -39,17 +39,20 @@ Public Class RentalForm
         Return _totalMiles
     End Function
 
-    Function NumberOfCharges(Optional clear As Boolean = False, Optional TotalCharges As Boolean = False) As Integer
-        Static toatalpayments As Integer
+    Function NumberOfCharges(Optional clear As Boolean = False, Optional TotalCharges As Boolean = False) As Decimal
+        Static totalPayment As Decimal
+        Dim payment As Decimal
+        Dim precentoff As Decimal
         If TotalCharges = False Then
-
+            precentoff = (TotalFee() * TotalDiscount())
+            payment = (TotalFee() - precentoff)
+            totalPayment += payment
         ElseIf TotalCharges = True Then
         End If
-        Return toatalpayments
+        Return totalPayment
     End Function
     'Calculations and User Input_____________________________________________________________________
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click, CalculateToolStripMenuItem.Click
-        Dim totalDiscount As Decimal
         Dim precentoff As Decimal
         Dim customerPayment As Decimal
         If UserInput() = True Then
@@ -65,17 +68,7 @@ Public Class RentalForm
 
             DayChargeTextBox.Text = $"${NumberOfDaysFee()}"
 
-            If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
-                totalDiscount = 0.008D
-            ElseIf AAAcheckbox.Checked = False Or Seniorcheckbox.Checked = False Then
-                If AAAcheckbox.Checked = True Then
-                    totalDiscount = 0.005D
-                ElseIf Seniorcheckbox.Checked = True Then
-                    totalDiscount = 0.003D
-                End If
-            End If
-
-            precentoff = (TotalFee() * totalDiscount)
+            precentoff = (TotalFee() * TotalDiscount())
             TotalDiscountTextBox.Text = precentoff.ToString("C")
             customerPayment = (TotalFee() - precentoff)
             TotalChargeTextBox.Text = $"{customerPayment.ToString("C")}"
@@ -85,6 +78,20 @@ Public Class RentalForm
             NumberOfCharges()
         End If
     End Sub
+
+    Function TotalDiscount() As Decimal
+        Dim _TotalDiscount As Decimal
+        If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
+            _TotalDiscount = 0.008D
+        ElseIf AAAcheckbox.Checked = False Or Seniorcheckbox.Checked = False Then
+            If AAAcheckbox.Checked = True Then
+                _TotalDiscount = 0.005D
+            ElseIf Seniorcheckbox.Checked = True Then
+                _TotalDiscount = 0.003D
+            End If
+        End If
+        Return _TotalDiscount
+    End Function
     Function NumberOfDaysFee() As Integer
         Dim _NumberOfDaysFee As Integer
         Dim totaldailyFee As Integer
